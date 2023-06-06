@@ -3,18 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/models/topic.dart';
 import '../services/topics.dart';
 
-class TopicsNotifier extends StateNotifier<List<Topic>> {
+Future<List<Topic>> fetchTopics() async {
   final topicApi = TopicsService();
-  TopicsNotifier() : super([]);
 
-  _initialize() async {
-    state = await topicApi.getTopics();
-  }
+  return await topicApi.getTopics();
 }
 
-final topicsProvider =
-    StateNotifierProvider<TopicsNotifier, List<Topic>>((ref) {
-  final tn = TopicsNotifier();
-  tn._initialize();
-  return tn;
-});
+final topicsFutureProvider =
+    FutureProvider<List<Topic>>((ref) async => await fetchTopics());

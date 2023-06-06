@@ -12,7 +12,7 @@ class QuestionService {
     List<String> options =
         List<String>.from(data['options'].map((item) => item.toString()));
 
-    return Question(
-        data['id'], data['question'], options, data['answer_post_path']);
+    return Question(data['id'], data['question'], options,
+        data['answer_post_path'], data['image_url']);
   }
 }

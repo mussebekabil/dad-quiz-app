@@ -9,7 +9,7 @@ class AnswerService {
         Uri.parse('https://dad-quiz-api.deno.dev$path'),
         body: jsonEncode({"answer": answer}));
     var data = jsonDecode(response.body);
-    print(data);
+
     return data['correct'];
   }
 }

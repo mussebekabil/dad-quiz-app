@@ -3,6 +3,8 @@ class Question {
   String question;
   List<String> options;
   String answerPath;
+  String? imageUrl;
 
-  Question(this.id, this.question, this.options, this.answerPath);
+  Question(
+      this.id, this.question, this.options, this.answerPath, this.imageUrl);
 }
