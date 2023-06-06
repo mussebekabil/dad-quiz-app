@@ -15,11 +15,13 @@ class StatisticsScreen extends ConsumerWidget {
       statsFuture.when(
           loading: () => const Text('Loading stats'),
           error: (error, stackTrace) => const Text('Error loading stats'),
-          data: (stats) => Text('Total correct answers: $stats')),
-      // ElevatedButton(
-      //   child: const Text('Go back'),
-      //   onPressed: () => () => context.pop('statistics'),
-      // )
+          data: (stats) => SizedBox(
+              height: 100,
+              child: Center(child: Text('Total correct answers: $stats')))),
+      ElevatedButton(
+        child: const Text('Go back'),
+        onPressed: () => context.pop('statistics'),
+      )
     ]));
   }
 }

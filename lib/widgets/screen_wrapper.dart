@@ -11,22 +11,21 @@ class ScreenWrapper extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("DAD Quiz App"),
-        actions: <Widget>[
-          TextButton(
-            style: style,
-            onPressed: () => context.push('/'),
-            child: const Text('Home'),
-          ),
-          TextButton(
-            style: style,
-            onPressed: () => context.push('/statistics'),
-            child: const Text('Statistics'),
-          ),
-        ],
-      ),
-      body: widget,
-    );
+        appBar: AppBar(
+          title: const Text("DAD Quiz App"),
+          actions: <Widget>[
+            TextButton(
+              style: style,
+              onPressed: () => context.push('/'),
+              child: const Text('Home'),
+            ),
+            TextButton(
+              style: style,
+              onPressed: () => context.push('/statistics'),
+              child: const Text('Statistics'),
+            ),
+          ],
+        ),
+        body: Center(child: widget));
   }
 }
