@@ -4,30 +4,42 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../services/models/question.dart';
+import '../services/models/statistic.dart';
 import '../services/question.dart';
 import '../widgets/screen_wrapper.dart';
 import '../providers/statistics.dart';
 
 class QuestionScreen extends StatefulWidget {
-  final String topicId;
-  QuestionScreen(this.topicId);
+  final int topicId;
+  final bool practice;
+  QuestionScreen(this.topicId, this.practice);
 
   @override
-  State<QuestionScreen> createState() => _QuestionScreenState(topicId);
+  State<QuestionScreen> createState() =>
+      _QuestionScreenState(topicId, practice);
 }
 
 class _QuestionScreenState extends State<QuestionScreen> {
-  final String _topicId;
+  final int _topicId;
+  final bool practice;
   Future<Question> _question;
   String? _selectedOption;
   bool? _correct;
 
-  _QuestionScreenState(this._topicId)
+  _QuestionScreenState(this._topicId, this.practice)
       : _question = QuestionService().getTopicQuestion(_topicId);
 
-  fetchNewQuestion() {
+  fetchNewQuestion() async {
+    int nextTopicId = _topicId;
+    if (practice == true) {
+      final asyncStats = await getStatistics();
+      List<Statistic> stats =
+          asyncStats.map((s) => Statistic.fromSharedPref(s)).toList();
+      nextTopicId = stats.last.topicId;
+    }
+
     setState(() {
-      _question = QuestionService().getTopicQuestion(_topicId);
+      _question = QuestionService().getTopicQuestion(nextTopicId);
       _selectedOption = null;
       _correct = null;
     });
@@ -36,7 +48,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
   selectAnswerHandler(question, value) {
     AnswerService().submitAnswer(question.answerPath, value!).then((correct) {
       if (correct == true) {
-        incrementStatistics();
+        setStatistics(_topicId);
       }
       setState(() {
         _correct = correct;
@@ -79,8 +91,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
                       SizedBox(
                           height: 100,
                           child: Center(child: Text(question.question))),
-                      SizedBox(
+                      Container(
                           height: 350,
+                          padding: const EdgeInsets.fromLTRB(150, 20, 150, 20),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [

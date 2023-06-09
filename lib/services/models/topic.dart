@@ -3,6 +3,8 @@ class Topic {
   String name;
   String questionPath;
 
+  Topic(this.id, this.name, this.questionPath);
+
   Topic.fromJson(Map<String, dynamic> jsonData)
       : id = jsonData['id'],
         name = jsonData['name'],

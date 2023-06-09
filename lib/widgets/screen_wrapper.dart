@@ -16,12 +16,12 @@ class ScreenWrapper extends StatelessWidget {
           actions: <Widget>[
             TextButton(
               style: style,
-              onPressed: () => context.push('/'),
+              onPressed: () => context.go('/'),
               child: const Text('Home'),
             ),
             TextButton(
               style: style,
-              onPressed: () => context.push('/statistics'),
+              onPressed: () => context.go('/statistics'),
               child: const Text('Statistics'),
             ),
           ],
