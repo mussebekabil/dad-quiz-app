@@ -11,7 +11,11 @@ final router = GoRouter(
     GoRoute(
         path: '/statistics', builder: (context, state) => StatisticsScreen()),
     GoRoute(
+        name: 'questions',
         path: '/topics/:topicId/questions',
-        builder: (context, state) => QuestionScreen(state.params['topicId']!)),
+        builder: (context, state) => QuestionScreen(
+              int.parse(state.params['topicId']!),
+              state.queryParams['practice']! == "true" ? true : false,
+            )),
   ],
 );

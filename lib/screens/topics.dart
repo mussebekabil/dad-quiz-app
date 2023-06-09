@@ -27,9 +27,14 @@ class TopicsScreen extends ConsumerWidget {
                   crossAxisCount: 2, mainAxisExtent: 256, childAspectRatio: 16),
               itemBuilder: (context, index) {
                 final topic = topics[index];
+                final practice = topic.name == 'Generic practice'
+                    ? {'practice': 'true'}
+                    : {'practice': 'false'};
                 return Card(
                     child: InkWell(
-                  onTap: () => context.push(topic.questionPath),
+                  onTap: () => context.goNamed('questions',
+                      params: {'topicId': '${topic.id}'},
+                      queryParams: practice),
                   child: Center(child: Text(topic.name)),
                 ));
               },

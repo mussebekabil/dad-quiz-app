@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'models/question.dart';
 
 class QuestionService {
-  Future<Question> getTopicQuestion(String topicId) async {
+  Future<Question> getTopicQuestion(int topicId) async {
     var response = await http.get(
         Uri.parse('https://dad-quiz-api.deno.dev/topics/$topicId/questions'));
     var data = jsonDecode(response.body);

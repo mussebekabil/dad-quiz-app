@@ -9,7 +9,7 @@ class QuestionNotifier extends StateNotifier<Question> {
   final questionApi = QuestionService();
   QuestionNotifier() : super(Question(0, "", [], "", null));
 
-  getQuestion(String topicId) async {
+  getQuestion(int topicId) async {
     state = await questionApi.getTopicQuestion(topicId);
   }
 }
