@@ -14,13 +14,16 @@ class TopicsScreen extends ConsumerWidget {
 
     return ScreenWrapper(futureTopics.when(
         loading: () => const CircularProgressIndicator(),
-        error: (err, stack) => Text('Error: $err'),
+        error: (err, stack) {
+          return Text('Error: $err');
+        },
         data: (topics) {
           return Column(children: [
             const SizedBox(
                 height: 100, child: Center(child: Text("Choose quiz topic"))),
             Expanded(
                 child: GridView.builder(
+              shrinkWrap: true,
               padding: const EdgeInsets.all(20),
               itemCount: topics.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

@@ -9,36 +9,30 @@ import '../widgets/screen_wrapper.dart';
 class StatisticsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.refresh(statisticsFutureProvider);
-    final statsFuture = ref.watch(statisticsFutureProvider);
+    final statsFuture = ref.watch(statisticsProvider);
 
     return ScreenWrapper(Column(children: [
       const SizedBox(
           height: 80,
           child: Center(child: Text('Total correct answers by topic'))),
-      statsFuture.when(
-          loading: () => const Text('Loading stats'),
-          error: (error, stackTrace) => const Text('Error loading stats'),
-          data: (stats) {
-            return Container(
-                height: 400,
-                padding: const EdgeInsets.fromLTRB(150, 20, 150, 20),
-                child: Column(children: [
-                  Expanded(
-                      child: ListView.builder(
-                    itemCount: stats.length,
-                    itemBuilder: (context, index) {
-                      final stat = Statistic.fromSharedPref(stats[index]);
-                      return Card(
-                        child: ListTile(
-                          title: Text(stat.topicName),
-                          trailing: Text("${stat.count}"),
-                        ),
-                      );
-                    },
-                  ))
-                ]));
-          }),
+      Container(
+          height: 400,
+          padding: const EdgeInsets.fromLTRB(150, 20, 150, 20),
+          child: Column(children: [
+            Expanded(
+                child: ListView.builder(
+              itemCount: statsFuture.length,
+              itemBuilder: (context, index) {
+                final stat = Statistic.fromSharedPref(statsFuture[index]);
+                return Card(
+                  child: ListTile(
+                    title: Text(stat.topicName),
+                    trailing: Text("${stat.count}"),
+                  ),
+                );
+              },
+            ))
+          ]))
     ]));
   }
 }

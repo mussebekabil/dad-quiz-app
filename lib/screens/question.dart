@@ -9,17 +9,17 @@ import '../services/question.dart';
 import '../widgets/screen_wrapper.dart';
 import '../providers/statistics.dart';
 
-class QuestionScreen extends StatefulWidget {
+class QuestionScreen extends ConsumerStatefulWidget {
   final int topicId;
   final bool practice;
   QuestionScreen(this.topicId, this.practice);
 
   @override
-  State<QuestionScreen> createState() =>
+  ConsumerState<QuestionScreen> createState() =>
       _QuestionScreenState(topicId, practice);
 }
 
-class _QuestionScreenState extends State<QuestionScreen> {
+class _QuestionScreenState extends ConsumerState<QuestionScreen> {
   final int _topicId;
   final bool practice;
   Future<Question> _question;
@@ -29,12 +29,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
   _QuestionScreenState(this._topicId, this.practice)
       : _question = QuestionService().getTopicQuestion(_topicId);
 
-  fetchNewQuestion() async {
+  fetchNewQuestion() {
     int nextTopicId = _topicId;
     if (practice == true) {
-      final asyncStats = await getStatistics();
+      final statsProvider = ref.watch(statisticsProvider);
       List<Statistic> stats =
-          asyncStats.map((s) => Statistic.fromSharedPref(s)).toList();
+          statsProvider.map((s) => Statistic.fromSharedPref(s)).toList();
       nextTopicId = stats.last.topicId;
     }
 
@@ -48,7 +48,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
   selectAnswerHandler(question, value) {
     AnswerService().submitAnswer(question.answerPath, value!).then((correct) {
       if (correct == true) {
-        setStatistics(_topicId);
+        ref.watch(statisticsProvider.notifier).setStatistics(_topicId);
       }
       setState(() {
         _correct = correct;
@@ -115,11 +115,11 @@ class _QuestionScreenState extends State<QuestionScreen> {
                               : Container(
                                   padding: const EdgeInsets.fromLTRB(
                                       150, 20, 150, 20),
-                                  child: Row(
+                                  child: Column(
                                     children: [
                                       const Text(
                                           "Correct answer! Please choose another question under the same topic"),
-                                      const SizedBox(width: 40),
+                                      const SizedBox(height: 10),
                                       ElevatedButton(
                                           onPressed: fetchNewQuestion,
                                           child: const Text("Choose question"))

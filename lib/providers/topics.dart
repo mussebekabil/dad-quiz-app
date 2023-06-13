@@ -12,10 +12,13 @@ Future<List<Topic>> fetchTopics() async {
 }
 
 final topicsFutureProvider = FutureProvider<List<Topic>>((ref) async {
-  final asyncStats = await ref.watch(statisticsFutureProvider.future);
+  final statsProvider = ref.watch(statisticsProvider);
   final topics = await fetchTopics();
+
+  if (statsProvider.isEmpty) return topics;
+
   List<Statistic> stats =
-      asyncStats.map((s) => Statistic.fromSharedPref(s)).toList();
+      statsProvider.map((s) => Statistic.fromSharedPref(s)).toList();
   final practiceTopic = topics.firstWhere((t) => t.id == stats.last.topicId);
   return topics
     ..add(Topic(
