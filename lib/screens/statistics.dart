@@ -16,7 +16,7 @@ class StatisticsScreen extends ConsumerWidget {
     return ScreenWrapper(Column(children: [
       SizedBox(
           height: 60,
-          child: Center(child: Text('Total correct answers ${totalCorrect}'))),
+          child: Center(child: Text('Total correct answers $totalCorrect'))),
       const SizedBox(
           height: 60,
           child: Center(child: Text('Total correct answers by topic'))),

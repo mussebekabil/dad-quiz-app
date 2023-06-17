@@ -16,6 +16,7 @@ void main() {
 
   test("Answer service checks if question is answered correctly", () async {
     WidgetsFlutterBinding.ensureInitialized();
+
     // Question is "What is the outcome of 3 + 3?"
     String answerPath = "/topics/1/questions/4/answers";
 
