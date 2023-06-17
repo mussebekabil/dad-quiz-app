@@ -1,0 +1,17 @@
+[
+  {
+    "topicId": 1, 
+    "topicName": "Basic arithmetics", 
+    "count": 4
+  },
+  {
+    "topicId": 2, 
+    "topicName": "Countries and capitals", 
+    "count": 2
+  },
+  {
+    "topicId": 3, 
+    "topicName": "Dog breeds", 
+    "count": 0
+  }
+]
