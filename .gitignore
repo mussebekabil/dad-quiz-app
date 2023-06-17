@@ -30,12 +30,7 @@ migrate_working_dir/
 .packages
 .pub-cache/
 .pub/
-
-# Ignore all build folder
-/build/*
-
-# Except web artefacts
-!/build/web
+/build/
 
 # Symbolication related
 app.*.symbols
