@@ -17,7 +17,7 @@ void main() {
 
   test("Topics service fetch topics correctly", () async {
     WidgetsFlutterBinding.ensureInitialized();
-    final interceptor = await quizMockApi();
+    final interceptor = await getTopics();
     final topics = await fetchTopics();
 
     expect(interceptor.isDone, true);

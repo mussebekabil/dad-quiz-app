@@ -34,6 +34,12 @@ class StatisticsNotifier extends StateNotifier<List<String>> {
     state = statStrLst;
     prefs.setStringList('statistics', statStrLst);
   }
+
+  getTotalCorrectCount() {
+    if (state.isEmpty) return 0;
+    return state.fold(
+        0, (prevValue, s) => prevValue + Statistic.fromSharedPref(s).count);
+  }
 }
 
 final statisticsProvider =

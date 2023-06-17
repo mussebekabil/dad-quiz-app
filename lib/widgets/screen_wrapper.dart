@@ -26,6 +26,6 @@ class ScreenWrapper extends StatelessWidget {
             ),
           ],
         ),
-        body: Center(child: widget));
+        body: widget);
   }
 }

@@ -6,12 +6,8 @@ import './providers/statistics.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //final prefs = await SharedPreferences.getInstance();
 
   runApp(ProviderScope(
-      // overrides: [
-      //   sharedPreferencesProvider.overrideWithValue(prefs),
-      // ],
       child: MaterialApp.router(
     routerConfig: router,
   )));

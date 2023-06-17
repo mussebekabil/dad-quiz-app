@@ -13,10 +13,8 @@ class TopicsScreen extends ConsumerWidget {
     AsyncValue<List<Topic>> futureTopics = ref.watch(topicsFutureProvider);
 
     return ScreenWrapper(futureTopics.when(
-        loading: () => const CircularProgressIndicator(),
-        error: (err, stack) {
-          return Text('Error: $err');
-        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, stack) => Center(child: Text('Error: $err')),
         data: (topics) {
           return Column(children: [
             const SizedBox(

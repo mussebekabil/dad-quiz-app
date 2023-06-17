@@ -66,18 +66,21 @@ class _QuestionScreenState extends ConsumerState<QuestionScreen> {
         builder: (BuildContext context, AsyncSnapshot<Question> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
-              return const Text('Select one of the options.');
+              return const Center(child: Text('Select one of the options.'));
             case ConnectionState.active:
             case ConnectionState.waiting:
-              return const CircularProgressIndicator();
+              return const Center(child: CircularProgressIndicator());
             case ConnectionState.done:
               if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
+                return Center(child: Text('Error: ${snapshot.error}'));
               } else {
                 Question question = snapshot.data!;
                 final options = List<Widget>.from(
                     question.options.map((option) => (ListTile(
-                          title: Text(option),
+                          title: GestureDetector(
+                              onTap: (() =>
+                                  selectAnswerHandler(question, option)),
+                              child: Text(option)),
                           leading: Radio<String>(
                               value: option,
                               groupValue: _selectedOption,
@@ -87,45 +90,53 @@ class _QuestionScreenState extends ConsumerState<QuestionScreen> {
 
                 return Container(
                     padding: const EdgeInsets.all(20),
-                    child: Column(children: [
-                      SizedBox(
-                          height: 100,
-                          child: Center(child: Text(question.question))),
-                      Container(
-                          height: 350,
-                          padding: const EdgeInsets.fromLTRB(150, 20, 150, 20),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                question.imageUrl == null
-                                    ? const SizedBox.shrink()
-                                    : Image(
-                                        image:
-                                            NetworkImage(question.imageUrl!)),
-                                Expanded(child: ListView(children: options)),
-                              ])),
-                      _correct == null
-                          ? const SizedBox.shrink()
-                          : _correct == false
-                              ? Container(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      150, 20, 150, 20),
-                                  child: const Text(
-                                      "Incorrect answer! Please try again"))
-                              : Container(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      150, 20, 150, 20),
-                                  child: Column(
-                                    children: [
-                                      const Text(
-                                          "Correct answer! Please choose another question under the same topic"),
-                                      const SizedBox(height: 10),
-                                      ElevatedButton(
-                                          onPressed: fetchNewQuestion,
-                                          child: const Text("Choose question"))
-                                    ],
-                                  ))
-                    ]));
+                    child: SingleChildScrollView(
+                        padding: EdgeInsets.all(0),
+                        child: Column(children: [
+                          SizedBox(
+                              height: 100,
+                              child: Center(child: Text(question.question))),
+                          Container(
+                              height: 350,
+                              padding:
+                                  const EdgeInsets.fromLTRB(50, 20, 50, 20),
+                              child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    question.imageUrl == null
+                                        ? const SizedBox.shrink()
+                                        : Image(
+                                            image: NetworkImage(
+                                                question.imageUrl!)),
+                                    Expanded(
+                                        child: ListView(children: options)),
+                                  ])),
+                          _correct == null
+                              ? const SizedBox.shrink()
+                              : _correct == false
+                                  ? Container(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          50, 20, 50, 20),
+                                      child: const Text(
+                                          "Incorrect answer! Please try again"))
+                                  : Container(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          50, 20, 50, 20),
+                                      child: Column(
+                                        children: [
+                                          const Text(
+                                              "Correct answer! Please choose another question under the same topic"),
+                                          const SizedBox(height: 10),
+                                          ElevatedButton(
+                                              key: const ValueKey(
+                                                  "chooseNextQuestion"),
+                                              onPressed: fetchNewQuestion,
+                                              child:
+                                                  const Text("Choose question"))
+                                        ],
+                                      ))
+                        ])));
               }
             default:
               return const SizedBox.shrink();

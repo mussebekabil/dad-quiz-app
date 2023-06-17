@@ -10,14 +10,19 @@ class StatisticsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final statsFuture = ref.watch(statisticsProvider);
+    int totalCorrect =
+        ref.watch(statisticsProvider.notifier).getTotalCorrectCount();
 
     return ScreenWrapper(Column(children: [
+      SizedBox(
+          height: 60,
+          child: Center(child: Text('Total correct answers ${totalCorrect}'))),
       const SizedBox(
-          height: 80,
+          height: 60,
           child: Center(child: Text('Total correct answers by topic'))),
       Container(
-          height: 400,
-          padding: const EdgeInsets.fromLTRB(150, 20, 150, 20),
+          height: 350,
+          padding: const EdgeInsets.fromLTRB(50, 20, 50, 20),
           child: Column(children: [
             Expanded(
                 child: ListView.builder(
@@ -26,6 +31,7 @@ class StatisticsScreen extends ConsumerWidget {
                 final stat = Statistic.fromSharedPref(statsFuture[index]);
                 return Card(
                   child: ListTile(
+                    key: Key("stat-${stat.topicId}"),
                     title: Text(stat.topicName),
                     trailing: Text("${stat.count}"),
                   ),

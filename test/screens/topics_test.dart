@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils.dart';
-import '../../lib/screens/topics.dart';
+import '../../lib/routes/routes.dart';
 
 void main() {
   setUpAll(() {
@@ -16,20 +16,24 @@ void main() {
     nock.cleanAll();
   });
 
-  testWidgets("Topics screen shows list of topics.", (tester) async {
+  testWidgets("Opening the application shows the list of topics.",
+      (tester) async {
     TestWidgetsFlutterBinding.ensureInitialized();
     final stats = await statsStringList();
     SharedPreferences.setMockInitialValues({"statistics": stats});
-    final topicsScreen =
-        ProviderScope(child: MaterialApp(home: TopicsScreen()));
-    await tester.pumpWidget(topicsScreen);
-    final interceptor = await quizMockApi();
-    await tester.pump();
+    final quizApp = ProviderScope(
+        child: MaterialApp.router(
+      routerConfig: router,
+    ));
+    await tester.pumpWidget(quizApp);
+    final interceptor = await getTopics();
 
-    // Shows loading spinner
+    // Shows loading spinner and page title
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(find.text("DAD Quiz App"), findsOneWidget);
+    expect(find.byType(TextButton), findsNWidgets(2));
 
-    await tester.pump();
+    await tester.pumpAndSettle();
 
     expect(interceptor.isDone, true);
     final topicTitles = [

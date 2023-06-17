@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import 'models/answer.dart';
-
 class AnswerService {
   Future<bool> submitAnswer(String path, String answer) async {
     var response = await http.post(
